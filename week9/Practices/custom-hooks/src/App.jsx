@@ -102,34 +102,61 @@ import { ClassMyComponent } from './component/Classbased';
 //   </div>
 // }
 //usepointer and useresize screen window hook.
-// import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-// const useResizePosition = () => {
-//   const [position, setPosition] = useState({ x: 0, y: 0 });
+const useKeyDown = () => {
+  const [key, setKey] = useState("");
 
-//   const handleResize = (e) => {
-//     setPosition({ x: window.innerWidth, y: window.innerHeight});
-//   };
 
-//   useEffect(() => {
-//     window.addEventListener('resize', handleResize);
-//     return () => {
-//       window.removeEventListener('resize', handleResize);
-//     };
-//   }, []);
+  const handleKey = (event) => {
+    console.log("Key pressed: " + event.key);
 
-//   return position;
-// };
+    // You can also access other properties of the event object like keyCode, code, etc. if needed
+    console.log("Key code: " + event.keyCode);
+    console.log("Key code: " + event.code);
+    setKey(event.key)
+    // setPosition({ x: window.innerWidth, y: window.innerHeight});
+  };
 
-// function App() {
-//   const resize = useResizePosition();
+  useEffect(() => {
+    window.addEventListener('keydown', handleKey);
+    return () => {
+      window.removeEventListener('keydown', handleKey);
+    };
+  }, []);
 
-//   return (
-//     <>
-//       Your current width and height position is {resize.x} {resize.y}
-//     </>
-//   )
-// }
+  return key;
+};
+
+function App() {
+  const key = useKeyDown();
+  const [count,setCount] = useState(0)
+  useEffect(()=>{
+    setCount(count => count+1)
+  },[key])
+
+  return (
+    <>
+      <div className=" bg-gradient-to-r from-cyan-500 to-blue-500  h-screen flex  justify-around">
+        
+        <div className="flex flex-col justify-around">
+<div className=" rounded-lg w-full text-center  p-2 px-4 h-max">
+<div className=' '>
+
+</div>
+<div className='text-lg font-bold  '>
+Key Pressed : <span className='bg-white font-bold text-4xl py-2 px-6 rounded-lg'>{key}</span>
+<div className=' m-9'>
+<span className=''>Counter: <span className='bg-white font-bold text-lg py-2 px-6 rounded-lg'>{count}</span></span>
+</div>
+
+</div>
+</div>
+        </div>
+    </div>
+    </>
+  )
+}
 
 
 // useInterval Hook
@@ -167,39 +194,39 @@ import { ClassMyComponent } from './component/Classbased';
 
 // export default App
 
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 
-function useDebounce (value, delay) {
-  // State to store the debounced value
-  const [debouncedValue, setDebouncedValue] = useState(value);
+// function useDebounce (value, delay) {
+//   // State to store the debounced value
+//   const [debouncedValue, setDebouncedValue] = useState(value);
 
-  useEffect(() => {
-    // Set up a timer to update the debounced value after the specified delay
-    const timerId = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
+//   useEffect(() => {
+//     // Set up a timer to update the debounced value after the specified delay
+//     const timerId = setTimeout(() => {
+//       setDebouncedValue(value);
+//     }, delay);
 
-    // Clean up the timer if the value changes before the delay has passed
-    return () => clearTimeout(timerId);
-  }, [value, delay]);
+//     // Clean up the timer if the value changes before the delay has passed
+//     return () => clearTimeout(timerId);
+//   }, [value, delay]);
 
-  return debouncedValue;
-};
-const SearchBar = () => {
-  const [inputValue, setInputValue] = useState('');
-  const debouncedValue = useDebounce(inputValue, 500); // 500 milliseconds debounce delay
+//   return debouncedValue;
+// };
+// const SearchBar = () => {
+//   const [inputValue, setInputValue] = useState('');
+//   const debouncedValue = useDebounce(inputValue, 500); // 500 milliseconds debounce delay
 
-  // Use the debouncedValue in your component logic, e.g., trigger a search API call via a useEffect
+//   // Use the debouncedValue in your component logic, e.g., trigger a search API call via a useEffect
 
-  return (<div>
-Dbouce value is {debouncedValue}
-    <input
-      type="text"
-      value={inputValue}
-      onChange={(e) => setInputValue(e.target.value)}
-      placeholder="Search..."
-    />
-  </div>);
-};
+//   return (<div>
+// Dbouce value is {debouncedValue}
+//     <input
+//       type="text"
+//       value={inputValue}
+//       onChange={(e) => setInputValue(e.target.value)}
+//       placeholder="Search..."
+//     />
+//   </div>);
+// };
 
-export default SearchBar;
+export default App;
