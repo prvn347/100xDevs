@@ -14,18 +14,26 @@ const app = new Hono<{
 	Bindings: {
 		DATABASE_URL: string
     SECRET_KEY: string
+
+	}
+  ,Variables : {
+		userId: string
 	}
 }>();
-app.use('/api/v1/blog/*', async (c, next) => {
-  const header = c.req.header("autherization") || ""
-
-  const token = header.split("")[1]
-  const verified = await verify(token,c.env.SECRET_KEY)
-  if( verified){
-     await next()  
-    
-  }
- 
+ app.use('/api/v1/blog/*', async (c, next) => {
+	const jwt = c.req.header('Authorization');
+	if (!jwt) {
+		c.status(401);
+		return c.json({ error: "unauthorized" });
+	}
+	const token = jwt.split(' ')[1];
+	const payload = await verify(token, c.env.SECRET_KEY);
+	if (!payload) {
+		c.status(401);
+		return c.json({ error: "unauthorized" });
+	}
+	c.set('userId', payload.id);
+	await next()
 })
 
 app.get('/', (c) => {
@@ -38,8 +46,8 @@ app.get('/', (c) => {
 })
 
 
-app.route('/api',userRouter)
-app.route('/api',blogRouter)
+app.route('/api/v1',userRouter)
+app.route('/api/v1',blogRouter)
 
 
 export default app

@@ -1,10 +1,8 @@
 import { Hono } from "hono";
-
-
-import { PrismaClient } from '@prisma/client'        
+import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, sign, verify } from 'hono/jwt'
-import { env } from "hono/adapter";
+
 const prisma = new PrismaClient()
 
 
@@ -23,19 +21,30 @@ userRouter.post("/signup", async (c)=>{
 
     
     try {
-        // const userExisted = await prisma.user.findFirst({
-    //     where:{
+        const userExisted = await prisma.user.findFirst({
+        where:{
+            email:body.email
+            
 
-    //     }
-    // })
+        }
+    })
+    if(userExisted){
+        return c.json({
+            msg:"user existed"
+        })
+    }
 		const user = await prisma.user.create({
 			data: {
 				email: body.email,
-				password: body.password
+				password: body.password,
+                name:body.name
                
 			}
 		});
-        const token = sign({id:user.id},c.env.SECRET_KEY)
+        
+            const token = await sign({id:user.id},c.env.SECRET_KEY)
+       
+        
         //jwt
         //validation
 	
@@ -54,7 +63,24 @@ userRouter.post("/signin", async (c)=>{
     }).$extends(withAccelerate())
     const body = await c.req.json()
     try {
-		
+        const findUser = await prisma.user.findUnique({
+            where:{
+              email:body.email,
+              password:body.password
+    
+            }
+          })
+          if(findUser){
+             const jwt = await sign({ id: findUser.id }, "secret");
+          
+         
+            
+          return c.json({
+            msg:"user signin succeful!",
+            users:findUser,
+            token:jwt
+          })}
+
         //jwt
        
 	
