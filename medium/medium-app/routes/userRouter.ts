@@ -2,7 +2,6 @@ import { Hono } from "hono";
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, sign, verify } from 'hono/jwt'
-
 const prisma = new PrismaClient()
 
 
@@ -15,6 +14,7 @@ export const userRouter = new Hono<{
 
 userRouter.post("/signup", async (c)=>{
     const prisma = new PrismaClient({
+
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
     const body = await c.req.json()
@@ -33,11 +33,23 @@ userRouter.post("/signup", async (c)=>{
             msg:"user existed"
         })
     }
-		const user = await prisma.user.create({
+    const password = new TextEncoder().encode(body.password);
+
+    const myDigest = await crypto.subtle.digest(
+  {
+    name: 'SHA-256',
+  },
+     password 
+);
+        console.log(myDigest)
+        const hashArray = Array.from(new Uint8Array(myDigest))
+        const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('')
+        console.log(new Uint8Array(myDigest));
+                const user = await prisma.user.create({
 			data: {
 				email: body.email,
-				password: body.password,
-                name:body.name
+				password: hashHex,
+                
                
 			}
 		});
@@ -63,29 +75,53 @@ userRouter.post("/signin", async (c)=>{
     }).$extends(withAccelerate())
     const body = await c.req.json()
     try {
-        const findUser = await prisma.user.findUnique({
+        const storedHash = await prisma.user.findFirst({
             where:{
-              email:body.email,
-              password:body.password
-    
+                email:body.email
+            },
+            select:{
+                email:true,
+                password:true,
+                id:true
             }
-          })
-          if(findUser){
-             const jwt = await sign({ id: findUser.id }, "secret");
-          
-         
+       
+        })
+
+// User input during login
+
+const password = new TextEncoder().encode(body.password);
+
+    const myDigest = await crypto.subtle.digest(
+  {
+    name: 'SHA-256',
+  },
+     password // The data you want to hash as an ArrayBuffer
+);
+        console.log(myDigest)
+        const hashArray = Array.from(new Uint8Array(myDigest))
+        const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('')
+        console.log(new Uint8Array(myDigest));
+        if (hashHex === storedHash?.password) {
+            console.log("Password is correct");
             
-          return c.json({
-            msg:"user signin succeful!",
-            users:findUser,
-            token:jwt
-          })}
+          
+                 const jwt = await sign({ id: storedHash.id }, "secret");
+              
+             
+                
+              return c.json({
+                msg:"user signin succeful!",
+                users:storedHash,
+                token:jwt
+              })}
+        } 
+        
 
         //jwt
        
 	
       
-	} catch(e) {
+	 catch(e) {
 		return c.status(403);
 	}
 

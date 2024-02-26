@@ -36,6 +36,7 @@ const app = new Hono<{
 	await next()
 })
 
+
 app.get('/', (c) => {
 
   const prisma = new PrismaClient({

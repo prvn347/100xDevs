@@ -106,7 +106,7 @@ export default function Page(): JSX.Element {
                 src="turborepo.svg"
                 width={120}
                 style={{ pointerEvents: "none" }}
-              />
+              /> 
             </div>
           </div>
           <Gradient className={styles.backgroundGradient} conic />
