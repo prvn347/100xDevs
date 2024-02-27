@@ -2,7 +2,10 @@ import { Hono } from "hono";
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, sign, verify } from 'hono/jwt'
+import { SignupType,signinInput,signupInput } from '@prvn347/common'
+
 const prisma = new PrismaClient()
+
 
 
 export const userRouter = new Hono<{
@@ -19,7 +22,11 @@ userRouter.post("/signup", async (c)=>{
     }).$extends(withAccelerate())
     const body = await c.req.json()
 
-    
+    const { success } = signupInput.safeParse(body);
+	if (!success) {
+		c.status(400);
+		return c.json({ error: "invalid input" });
+	}
     try {
         const userExisted = await prisma.user.findFirst({
         where:{
@@ -74,6 +81,11 @@ userRouter.post("/signin", async (c)=>{
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
     const body = await c.req.json()
+    const { success } = signinInput.safeParse(body);
+	if (!success) {
+		c.status(400);
+		return c.json({ error: "invalid input" });
+	}
     try {
         const storedHash = await prisma.user.findFirst({
             where:{
