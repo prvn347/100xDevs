@@ -1,8 +1,9 @@
 {
-  "name": "frontend",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@prvn347/signup_compo",
+  "version": "1.0.2",
   "type": "module",
+  "access": "public",
+  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -10,17 +11,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@prvn347/common": "^1.0.5",
-    "axios": "^1.6.7",
+    "@prvn347/signup_compo": "^1.0.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-modal": "^3.16.1",
-    "react-router-dom": "^6.22.1"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
-    "@types/react-modal": "^3.16.3",
     "@typescript-eslint/eslint-plugin": "^7.0.2",
     "@typescript-eslint/parser": "^7.0.2",
     "@vitejs/plugin-react": "^4.2.1",

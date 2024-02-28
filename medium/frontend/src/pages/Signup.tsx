@@ -1,5 +1,55 @@
-export function Signup(){
+import { useNavigate } from "react-router-dom";
+import { Heading } from "../components/Heading";
+import { SubHeading } from "../components/SubHeading";
+import { InputBox } from "../components/Input";
+import { Button } from "../components/Button";
+import { Header } from "../components/Header";
+import axios from "axios";
+import ReactModal from 'react-modal';
+import { useState } from "react";
+
+export function Singup(){
+
+    // const [isOpen, setIsOpen] = useState<boolean>(false);
+    const navigate = useNavigate()
+    
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [password, setPassword] = useState("");
     return <div>
-        
+        <Header  name2="Signin"  route2={()=>{navigate('/signin')}}/>
+        <div className="flex  justify-center  h-screen">
+            <div className=" flex flex-col justify-center">
+            <div className="  rounded-sm w-80 text-center  p-2 px-4 h-max    ">
+                <Heading name = "Join Now."/>
+                <div className="mt-12">
+                <InputBox onchange={(e:any)=>{ setEmail(e.target.value)}} name="Email" placeholder="Enter your email"/>
+                <InputBox onchange={(e:any)=>{ setName(e.target.value)}} name="Name" placeholder="Enter your full name"/>
+                <InputBox onchange={(e:any)=>{ setPassword(e.target.value)}} name="Password" placeholder="Enter you password"/>
+
+                <Button name="Signup" onclick={ async ()=>{
+                  const response =  await axios.post("https://medium-app.sahupravin960.workers.dev/api/v1/signup",
+                    {
+                        email,
+                        name,
+                        password
+                    })
+                    if(response.data.msg === "user existed"){
+                        <ReactModal
+                            isOpen={true}
+                            contentLabel="Example Modal" >
+                            This is the content of the modal.
+                        </ReactModal>
+
+                    }
+                    localStorage.setItem("token", response.data.token);
+                    // Redirect to dashboard with the first name as query parameter
+                    navigate("/blogs");
+                }}/>
+                <SubHeading subheading="Already have an account?" link="Sign in" onclick={()=>{navigate('/signin')}}/>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
 }

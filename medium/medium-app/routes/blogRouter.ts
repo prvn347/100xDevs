@@ -5,7 +5,7 @@ import { verify,sign } from "hono/jwt";
 const prisma = new PrismaClient()
 import { ContentType,UpdateType, contentInput, updateContent } from "@prvn347/common";
 
-
+import { cors } from "hono/cors";
 export const blogRouter = new Hono<{
 	Bindings: {
 		DATABASE_URL: string,
@@ -17,6 +17,7 @@ export const blogRouter = new Hono<{
 }>();
 
 
+blogRouter.use(cors())
 
 
 blogRouter.post('/blog',async (c)=>{

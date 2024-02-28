@@ -1,12 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 @font-face { 
     font-family: "pop"; 
-    src: url("../public/glory.ttf"); 
+    src: url("../src/assets/glory.ttf"); 
 } 
 @font-face { 
     font-family: "medium"; 
-    src: url("../public/sub.otf"); 
+    src: url("../src/assets/sub.otf"); 
 } 

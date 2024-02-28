@@ -3,17 +3,18 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { decode, sign, verify } from 'hono/jwt'
 import { SignupType,signinInput,signupInput } from '@prvn347/common'
-
+import { cors } from "hono/cors";
 const prisma = new PrismaClient()
 
 
 
 export const userRouter = new Hono<{
-	Bindings: {
+	Bindings: { 
 		DATABASE_URL: string
         SECRET_KEY:string
 	}
 }>();
+userRouter.use(cors())
 
 userRouter.post("/signup", async (c)=>{
     const prisma = new PrismaClient({
@@ -56,6 +57,7 @@ userRouter.post("/signup", async (c)=>{
 			data: {
 				email: body.email,
 				password: hashHex,
+                name:body.name
                 
                
 			}

@@ -4,6 +4,7 @@ import { blogRouter } from '../routes/blogRouter'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { verify } from 'hono/jwt'
+import { cors } from 'hono/cors'
 
 
 
@@ -20,6 +21,7 @@ const app = new Hono<{
 		userId: string
 	}
 }>();
+app.use(cors())
  app.use('/api/v1/blog/*', async (c, next) => {
 	const jwt = c.req.header('Authorization');
 	if (!jwt) {
