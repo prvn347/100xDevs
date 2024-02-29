@@ -22,8 +22,9 @@ userRouter.post("/signup", async (c)=>{
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate())
     const body = await c.req.json()
-
+console.log(body)
     const { success } = signupInput.safeParse(body);
+    console.log(success)
 	if (!success) {
 		c.status(400);
 		return c.json({ error: "invalid input" });

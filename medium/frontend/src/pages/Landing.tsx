@@ -2,11 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { Header } from "../components/Header";
 import { Button } from "../components/Button";
 import Blink from "./Blink";
+import { useEffect } from "react";
 // import ReactModal from 'react-modal';
 // import { useState } from "react";
 export function Landing(){
+    const navigate = useNavigate()
+  
     // const [isOpen, setIsOpen] = useState<boolean>(false);
-const navigate = useNavigate()
     return <div>
         <div className=" ">
             <Header name1="Signin" name2="Get Started" route1={()=>{

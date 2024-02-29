@@ -28,7 +28,9 @@ try {
     const userId = c.get('userId')
     console.log(userId)
     const body = await c.req.json()
+    console.log(body)
     const { success } = contentInput.safeParse(body);
+    console.log(success)
 	if (!success) {
 		c.status(400);
 		return c.json({ error: "invalid input" });
@@ -37,13 +39,15 @@ try {
         data:{
             authorId:userId,
             title:body.title,
-           content: body.content
+           content: body.content,
+           published:true
         },
         select:{
             title:true,
             author:true,
             content:true,
-            id:true
+            id:true,
+            published:true
 
         }
        
@@ -122,7 +126,14 @@ try {
     const blogs = await prisma.post.findMany({
         where:{
             authorId:userId
+        },
+        select:{
+            author:true,
+            title:true,
+            content:true
+
         }
+        
     })
     return c.json({
         userBlogs:blogs

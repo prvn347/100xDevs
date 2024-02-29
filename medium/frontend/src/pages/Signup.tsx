@@ -5,17 +5,29 @@ import { InputBox } from "../components/Input";
 import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 import axios from "axios";
-import ReactModal from 'react-modal';
-import { useState } from "react";
+// import ReactModal from 'react-modal';
+import {   useEffect, useState } from "react";
 
 export function Singup(){
 
+
     // const [isOpen, setIsOpen] = useState<boolean>(false);
     const navigate = useNavigate()
+    const token = localStorage.getItem("token");
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          // Assuming you want to redirect to the dashboard if the user is already authenticated
+          navigate("/blogs");
+        }else{
+          navigate("/signup")
+        }
+      }, [navigate]);
     
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
+ 
     return <div>
         <Header  name2="Signin"  route2={()=>{navigate('/signin')}}/>
         <div className="flex  justify-center  h-screen">
@@ -28,28 +40,30 @@ export function Singup(){
                 <InputBox onchange={(e:any)=>{ setPassword(e.target.value)}} name="Password" placeholder="Enter you password"/>
 
                 <Button name="Signup" onclick={ async ()=>{
+                    
                   const response =  await axios.post("https://medium-app.sahupravin960.workers.dev/api/v1/signup",
                     {
                         email,
                         name,
                         password
                     })
+                 
                     if(response.data.msg === "user existed"){
-                        <ReactModal
-                            isOpen={true}
-                            contentLabel="Example Modal" >
-                            This is the content of the modal.
-                        </ReactModal>
+                        alert("user existed")
+                        // setIsOpen(true)
+                      
 
                     }
-                    localStorage.setItem("token", response.data.token);
+                   else{ localStorage.setItem("token", response.data.token);
                     // Redirect to dashboard with the first name as query parameter
-                    navigate("/blogs");
+                    navigate("/blogs");}
                 }}/>
                 <SubHeading subheading="Already have an account?" link="Sign in" onclick={()=>{navigate('/signin')}}/>
                 </div>
             </div>
             </div>
         </div>
+       
     </div>
+
 }

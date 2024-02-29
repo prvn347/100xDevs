@@ -2,8 +2,8 @@
 
 interface HeadingProps {
     subheading: string;
-    link:string,
-    onclick:any // Assuming name is a string, you can change the type if necessary
+    link?:string,
+    onclick?:any // Assuming name is a string, you can change the type if necessary
 }
 
 export function SubHeading({subheading,link,onclick}:HeadingProps){

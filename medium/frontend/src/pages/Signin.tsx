@@ -6,14 +6,24 @@ import { Button } from "../components/Button";
 import { Header } from "../components/Header";
 import axios from "axios";
 // import ReactModal from "react-modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function Signin(){
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+          // Assuming you want to redirect to the dashboard if the user is already authenticated
+          navigate("/blogs");
+        }else{
+          navigate("/signin")
+        }
+      }, [navigate]);
 
     const [email, setEmail] = useState("");
    
     const [password, setPassword] = useState("");
-    const navigate = useNavigate()
     return <div>
         <Header  name2="Get Started"  route2={()=>{navigate('/signup')}}/>
         <div className="flex  justify-center  h-screen">

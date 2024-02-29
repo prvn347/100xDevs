@@ -25,7 +25,7 @@ app.use(cors())
  app.use('/api/v1/blog/*', async (c, next) => {
 	const jwt = c.req.header('Authorization');
 	if (!jwt) {
-		c.status(401);
+		c.status(405);
 		return c.json({ error: "unauthorized" });
 	}
 	const token = jwt.split(' ')[1];
