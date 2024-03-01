@@ -7,6 +7,7 @@ import { Singup } from './pages/Signup'
 import { Landing } from './pages/Landing'
 import { Blogs } from './pages/Blogs'
 import { Write } from './pages/Write'
+import { ArticlePage } from './pages/ArticlePage'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blog/:id" element={<Blog />} />
           <Route path='/postStories' element = { <Write/>}/>
+          <Route path='/article' element = {<ArticlePage/>}/>   
         </Routes>
       </BrowserRouter>
    
