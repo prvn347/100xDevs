@@ -12,10 +12,9 @@ export function Header({ name1, name2, route1, route2 }:name) {
   const navigate = useNavigate();
 
   return (
-    <div className="bg-beige">
-      <div className="container mx-auto px-4 py-2">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center">
+   
+    <div className="border-b flex bg-beige justify-between px-10 py-4">
+    <div className="flex items-center">
             <a href="/">
               <svg
                 width="50px"
@@ -23,6 +22,7 @@ export function Header({ name1, name2, route1, route2 }:name) {
                 viewBox="0 -55 256 256"
                 version="1.1"
                 xmlns="http://www.w3.org/2000/svg"
+                // @ts-ignore
                 xmlns:xlink="http://www.w3.org/1999/xlink"
                 preserveAspectRatio="xMidYMid"
               >
@@ -43,13 +43,13 @@ export function Header({ name1, name2, route1, route2 }:name) {
               &nbsp;sastaMedium
             </span>
           </div>
-          <div className="flex items-center">
+    <div>
+    <div className="flex items-center">
             <TextButton link={name1} onclick={route1} subheading={""} />
             <Button name={name2} onclick={route2} />
           </div>
-        </div>
-      </div>
-      <hr className="h-px bg-gray-200 border-0 dark:bg-gray-700" />
     </div>
+</div>
+    
   );
 }

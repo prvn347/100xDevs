@@ -4,9 +4,8 @@ import { PostCard } from "../components/PostCard";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BlogSkeleton } from "../components/Skeleton";
-// import { Button } from "../components/Button";
 
-export function Blogs(){
+export function MyBlogs(){
     const navigate = useNavigate()
 
     const token = localStorage.getItem("token");
@@ -14,7 +13,7 @@ export function Blogs(){
         const token = localStorage.getItem("token");
         if (token) {
           // Assuming you want to redirect to the dashboard if the user is already authenticated
-          navigate("/blogs");
+          navigate("/myblogs");
         } else {
           navigate("/signin");
         }
@@ -23,7 +22,7 @@ export function Blogs(){
     const [blogs, setBlogs] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        axios.get("https://medium-app.sahupravin960.workers.dev/api/v1/blog", {
+        axios.get("https://medium-app.sahupravin960.workers.dev/api/v1/blog/myblogs", {
             headers: {
                 Authorization: 'Bearer ' + token //the token is a variable which holds the token
             }
@@ -33,7 +32,7 @@ export function Blogs(){
             setLoading(false)
         })
     }, []);
-
+    
     if (loading) {
         return <div>
                             <Header name1="My blogs" route1={()=>{navigate('/myblogs')}} name2="Write" route2={() => {navigate("/postStories")}} />
@@ -49,11 +48,13 @@ export function Blogs(){
             </div>
         </div>
     }
+
     return (
         <div>
+
             <div>
-                <Header name1="My blogs" route1={()=>{navigate('/myblogs')}} name2="Write" route2={() => {navigate("/postStories")}} />
-                <div onClick={()=>{
+                <Header name1="All blogs" route1={()=>{navigate("/blogs")}} name2="Write" route2={() => {navigate("/postStories")}}  />
+                <div  onClick={()=>{
              
 
            
@@ -63,10 +64,11 @@ export function Blogs(){
              navigate("/signin");
  
             
-           }} className="cursor-pointer bg-red-500 flex justify-center">log out</div>
+           }} className=" cursor-pointer bg-red-500 flex justify-center">log out</div>
+            
             </div>
             <div className="flex flex-col items-center"> {/* Ensure PostCard components are stacked vertically */}
-                <span className="font-glory text-2xl font-semibold p-3">All Blogs</span>
+                <span className="font-glory text-2xl font-semibold p-3">My Blogs</span>
                 {/* Render each PostCard component inside a block-level container */}
                 {blogs.map((blog) => (
                     // @ts-ignore
@@ -75,7 +77,7 @@ export function Blogs(){
 
 
                                             {/* @ts-ignore */}
-                        <PostCard id={blog.id} title={blog.title} content={blog.content} userName={blog.author.name || "Anonymous"}/>
+                        <PostCard id={blog.id} title={blog.title} content={blog.content} userName={blog.author.name}/>
                     </div>
                 ))}
             </div>

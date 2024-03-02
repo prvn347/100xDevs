@@ -2,12 +2,16 @@ import { useNavigate } from "react-router-dom";
 import { ProfileName } from "./ProfileName";
 
 
+
 interface content{
 title :string,
 content :string,
-userName:string
+userName:string,
+id:string
 }
-export function PostCard( {title,content,userName}:content){
+export function PostCard( {title,content,userName,id}:content){
+
+  
     const maxLength = 100; // Maximum length of the content before truncation
 const navigate = useNavigate()
     // Function to truncate the text content if it's too long
@@ -23,7 +27,7 @@ const navigate = useNavigate()
     return <div className="block">
         
 <a href="#"
-//  onClick={()=>{navigate("/article?id="+ user._id + "&name=" + user.firstName)}}
+ onClick={()=>{navigate("/article?id=" + id)}}
   className="block w-screen p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100  ">
 
 <ProfileName name={userName}/>

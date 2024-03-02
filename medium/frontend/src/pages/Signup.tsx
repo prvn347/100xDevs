@@ -7,13 +7,14 @@ import { Header } from "../components/Header";
 import axios from "axios";
 // import ReactModal from 'react-modal';
 import {   useEffect, useState } from "react";
+import { Spinner } from "../components/Spinner";
 
 export function Singup(){
 
 
     // const [isOpen, setIsOpen] = useState<boolean>(false);
     const navigate = useNavigate()
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -27,6 +28,19 @@ export function Singup(){
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+    if (loading ) {
+      return <div>
+      
+      
+          <div className="h-screen flex flex-col justify-center">
+              
+              <div className="flex justify-center">
+              <span> Please wait..</span>  <Spinner />
+              </div>
+          </div>
+      </div>
+  }
  
     return <div>
         <Header  name2="Signin"  route2={()=>{navigate('/signin')}}/>
@@ -40,13 +54,14 @@ export function Singup(){
                 <InputBox onchange={(e:any)=>{ setPassword(e.target.value)}} name="Password" placeholder="Enter you password"/>
 
                 <Button name="Signup" onclick={ async ()=>{
-                    
+                    await setLoading(true)
                   const response =  await axios.post("https://medium-app.sahupravin960.workers.dev/api/v1/signup",
                     {
                         email,
                         name,
                         password
                     })
+                    
                  
                     if(response.data.msg === "user existed"){
                         alert("user existed")
@@ -55,6 +70,7 @@ export function Singup(){
 
                     }
                    else{ localStorage.setItem("token", response.data.token);
+                   
                     // Redirect to dashboard with the first name as query parameter
                     navigate("/blogs");}
                 }}/>

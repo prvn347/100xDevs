@@ -1,11 +1,11 @@
 // import { useNavigate } from "react-router-dom";
-import {  useRef, useState } from "react";
+import {   useState } from "react";
 import { Header } from "../components/Header";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export function Write(){
-    const ref = useRef()
+   
     const navigate = useNavigate();
     const token = localStorage.getItem("token");
 
@@ -28,10 +28,11 @@ export function Write(){
         <div>
             <div className="  ">
                <Header name2="Publish" route2={ async ()=>{
+                 
                 if(token){
                     
                     try {
-                        const response =  await axios.post("https://medium-app.sahupravin960.workers.dev/api/v1/blog",
+                       await axios.post("https://medium-app.sahupravin960.workers.dev/api/v1/blog",
                  {
                      title,
                      content
@@ -42,7 +43,7 @@ export function Write(){
                       }
 
                  }) 
-                 navigate("/blogs")
+                 navigate("/myblogs")
                     } catch (error) {
                         console.log(error)
                         

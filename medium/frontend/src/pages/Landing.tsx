@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import { Header } from "../components/Header";
 import { Button } from "../components/Button";
-import Blink from "./Blink";
-import { useEffect } from "react";
+// import Blink from "./Blink";
+// import { useEffect } from "react";
 // import ReactModal from 'react-modal';
 // import { useState } from "react";
 export function Landing(){
@@ -11,9 +11,8 @@ export function Landing(){
     // const [isOpen, setIsOpen] = useState<boolean>(false);
     return <div>
         <div className=" ">
-            <Header name1="Signin" name2="Get Started" route1={()=>{
-                navigate("/signin")
-            }} route2={()=>{navigate('/signup')}}/>
+            <Header name2="Sign in" 
+route2={()=>{navigate('/signin')}}/>
             
            
         </div>
