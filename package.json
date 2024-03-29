@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@prisma/client": "^5.11.0",
+    "axios": "^1.6.8",
     "express": "^4.19.1",
     "zsh": "^0.0.1"
   },
